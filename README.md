@@ -228,6 +228,7 @@ Run `test_ddpg_psne.py` with the following option:
 The multi-agent environment pre-trained model is located under
 `/models/local_actor.pth`
 
+###### Video
 A sample video of the running actor is located in `/assets/Reacher_DDPG_PSNE.mp4`
 
 
