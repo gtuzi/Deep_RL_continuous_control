@@ -185,8 +185,8 @@ In order to pick a consistent noise scale `σ` across different topologies, and 
 
 where `d()` denotes the distance in the actions produced between a policy and it's perturbed version:
 
-<div style="text-align: center"><img src="assets/psne_distance_fun.png" alt="PSNE Distance Function" width="22
-0" height="60" ></div>
+<div style="text-align: center"><img src="assets/psne_distance_fun.png" alt="PSNE Distance Function" width="240
+0" height="100" ></div>
 
 The distance metric is estimated on a batch sampled on the replay memory.
 
