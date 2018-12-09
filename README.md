@@ -185,7 +185,7 @@ In order to pick a consistent noise scale `σ` across different topologies, and 
 
 where `d()` denotes the distance in the actions produced between a policy and it's perturbed version:
 
-<div style="text-align: center"><img src="assets/psne_distance_fun.png" alt="PSNE Distance Function" width="240
+<div style="text-align: center"><img src="assets/psne_distance_fun.png" alt="PSNE Distance Function" width="340
 0" height="100" ></div>
 
 The distance metric is estimated on a batch sampled on the replay memory.
@@ -228,6 +228,7 @@ Run `test_ddpg_psne.py` with the following option:
 The multi-agent environment pre-trained model is located under
 `/models/local_actor.pth`
 
+###### Video
 A sample video of the running actor is located in `/assets/Reacher_DDPG_PSNE.mp4`
 
 
