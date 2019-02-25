@@ -14,7 +14,7 @@
 [DPG]:  http://proceedings.mlr.press/v32/silver14.pdf
 [DDPG]: https://arxiv.org/pdf/1509.02971.pdf
 [PSNE]:  https://arxiv.org/pdf/1706.01905.pdf
-
+[TD3]: https://arxiv.org/pdf/1802.09477.pdf
 
 [karpathy_rl_blog]: http://karpathy.github.io/2016/05/31/rl/
 [lilian_weng_policy_gradient]:https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html#policy-gradient
@@ -22,7 +22,7 @@
 # Continuous Control
 ### Introduction
 
-For this project, I explore the application of [DDPG], with parameter-space noise variation [PSNE]. A few variations of [PSNE] are tried to speed up training.
+For this project, I explore the application of [DDPG], [DDPG] with parameter-space noise variation [PSNE], [TD3], and [PPO].
  
 These application are applied to [Reacher] and [Crawler] environments. Two versions of [Reacher] are tried: one with a single agent, the other with multiple agents. 
 
@@ -70,6 +70,9 @@ The environment is considered solved, when the average (over 100 episodes) of th
 [DDPG], [DDPG] + [PSNE] are implemented. The explanation for these algorithms is found
 [here](ddpg.md)
 
+
+## [TD3] for Continuous Control
+[TD3] is implemented. Explanation is [here](td3.md)
 
 #### Dependencies
 * python: 3.5
