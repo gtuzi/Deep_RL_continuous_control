@@ -69,7 +69,7 @@ This has the effect of fitting the value of a small area around the target actio
 
 The authors address all the above issues in the [TD3] algorithm, which pretty much can be viewed as a modified version of [DDPG], while addressing the 3 main issues above.
 
-<div style="text-align: center"><img src="assets/td3.png" alt="Policy Variance" width="500" height="450" ></div>
+<div style="text-align: center"><img src="assets/td3.png" alt="Policy Variance" width="300" height="350" ></div>
 
 
 
