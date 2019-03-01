@@ -42,6 +42,12 @@ This is a *multi*-agent (20) where there are several identical agents each with 
 
 *Note:* The old report includes the single agent experiment as well. They are located onder 'notebooks/old'
 
+##### Training Traces
+<div style="text-align: center"><img src="assets/Comparative_Results.png" alt="Train Comparisons" width="500" height="350" ></div>
+
+PPO achieves the highest score on Reacher (approx 75), while the other ones are approx 35 score.
+
+
 #### [Crawler]
 The multi-agent (13) [Crawler] enviroment is used here.
 
