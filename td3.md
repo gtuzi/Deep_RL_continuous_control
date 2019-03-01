@@ -23,7 +23,7 @@ But this is still biased because the networks sample the same replay buffer and 
 Moreover, for some states, this dependence will exacerbate, i.e. : `Q1(s, π2(s)) >= Q2(s, π2(s))`, when we think that `Q2(s, π2(s))` suffers from overestimation.
 To address this problem, we propose to simply upper-bound the less biased value estimate `Q2` by the biased estimate `Q1`.  This results in taking the minimum between the two estimates, to give the target update of our Clipped Double Q-learning algorithm.
 
-<div style="text-align: center"><img src="assets/double_clipped_q.png" alt="Clipped Double Q-learning" width="300" height="70" ></div>
+<div style="text-align: center"><img src="assets/double_clipped_q.png" alt="Clipped Double Q-learning" width="300" height="50" ></div>
 
 
 #### Error Accumulation
