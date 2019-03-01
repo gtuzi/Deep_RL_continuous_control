@@ -18,7 +18,7 @@
 
 [karpathy_rl_blog]: http://karpathy.github.io/2016/05/31/rl/
 [lilian_weng_policy_gradient]:https://lilianweng.github.io/lil-log/2018/04/08/policy-gradient-algorithms.html#policy-gradient
-
+[Layer Normalization]: https://arxiv.org/abs/1607.06450
 # Continuous Control
 ### Introduction
 
@@ -31,48 +31,73 @@ Algorithms such as [A3C] and [D4PG] (based on [DDPG]) take a distributed approac
 
 ### Environment Description
 
-#### Reacher
+#### [Reacher]
 
 In this environment, a double-jointed arm can move to target locations. A reward of +0.1 is provided for each step that the agent's hand is in the goal location. Thus, the goal of the agent is to maintain its position at the target location for as many time steps as possible.
 
 <div style="text-align: center"><img src="assets/reachers_frozen.png" alt="Reacher" width="400" height="200" ></div>
 
 The observation space consists of 33 variables corresponding to position, rotation, velocity, and angular velocities of the arm. Each action is a vector with four numbers, corresponding to torque applicable to two joints. Every entry in the action vector is a number between -1 and 1.
+This is a *multi*-agent (20) where there are several identical agents each with its own copy of the environment
 
-#### Training variants
+*Note:* The old report includes the single agent experiment as well. They are located onder 'notebooks/old'
 
-For this project, I explore two separate versions of the Unity environment for [Reacher]:
-- The first version contains a *single* agent.
-- The second version is a *multi*-agent where there are several identical agents each with its own copy of the environment: 
-    - *Reacher* contains 20 agents
-    - *Crawler* contains 13 agents
+#### [Crawler]
+The multi-agent (13) [Crawler] enviroment is used here.
 
-Only the multi-agent [Crawler] enviroment is used here. 
 
-### Solving the Environments
+### Scoring
 The tasks in this project are episodic, that is, the agent/s run for a finite number of steps on the environment.
-For purposes of Udacity's Deep RL class the following variations determine when an environment is solved: 
-
-#### Option 1: Solve the single agent version
-The task is episodic, and in order to solve the environment,  your agent must get an average score of +30 over 100 consecutive episodes.
-
-#### Option 2: Solve the Second Version
-
-The barrier for solving the second version of the environment is slightly different, to take into account the presence of many agents.  In particular, your agents must get an average score of +30 (over 100 consecutive episodes, and over all agents).  Specifically,
-- After each episode, we add up the rewards that each agent received (without discounting), to get a score for each agent.  This yields 20 (potentially different) scores.  We then take the average of these 20 scores. 
-- This yields an **average score** for each episode (where the average is over all 20 agents).
-
-The environment is considered solved, when the average (over 100 episodes) of those average scores is at least +30. 
+- After each episode, add up the rewards that each agent received (without discounting) to get a score for each agent.  This yields *N* (potentially different) scores.
+- Take the average of these scores yielding an **average score** for each episode (where the average is over all the agents).
 
 
-## Deep Deterministic Policy Gradients [DDPG] variants for Continuous Control
+## Poicy gradient continuous control algorithms implemented
 
+### Deep Deterministic Policy Gradients [DDPG]
 [DDPG], [DDPG] + [PSNE] are implemented. The explanation for these algorithms is found
 [here](ddpg.md)
 
 
-## [TD3] for Continuous Control
+### Twin Delayed Deep Deterministic Policy Gradient [TD3]
 [TD3] is implemented. Explanation is [here](td3.md)
+
+
+### Proximal Policy Optimization [PPO]
+In this particular version, for policy gradient loss computation (and clipping), the PPO2 version found in OpenAI's baseline implementation (in Tensorflow) approach was used.
+Theoretical explanatory material coming soon ...
+
+
+### Networks
+##### Deterministic Actor
+(Used for DDPG and its variants, TD3) is a fully connected network with:
+ - 3 hidden layers of 256,256,128 units
+ - `ReLU` nonlinearities for the hidden layers
+ - 1 output layer of with `tanh` activation
+ - [Layer Normalization] used in hidden layers (helps with PSNE approach)
+ - Input is batch normalized
+Located in `agents/topologies/actor.py`
+
+##### Stochastic Actor
+Used for [PPO], it is a fully connected FF network which shares the latent features with the Gaussian distribution parameter estimation (i.e. mu), as well as the value function (Vf).
+So, this is a two-headed network. The Gaussian head serves as the stochastic policy and Vf is further used for the advantage estimation.
+*Latent feature body*:
+- 2 hidden layers for the shared body of latent features. Each layer of 256 units
+- `ReLU` non-linearity used for hidden feature layers
+- [Layer Normalization] used between the hidden layers
+
+*Gaussian head (i.e. policy)*:
+- One fully connected layer
+- `tanh` activation
+- Sigma parameter is populated at runtime depending on the use: during training it is the annealed value, while at test-time a very small value (--> greedy).
+- Parameters are used in a Gaussian distribution object which is then sampled accordingly
+
+*Value function (VF) head*
+- Fully connected layer
+- Linear activation
+
+Located in `agents/topologies/actor.py`
+
 
 #### Dependencies
 * python: 3.5
@@ -85,15 +110,17 @@ The environment is considered solved, when the average (over 100 episodes) of th
 
 ##### Test the algorithms the actor
 Run `test_ddpg_psne.py` with the following option:
-* -a : algorithm of choice: ['TD3'|PPO|DDPG|DDPG_PSNE]
+* -a : algorithm of choice: `TD3|PPO|DDPG|DDPG_PSNE`
 
 
 ###### Pre-trained Models
-The pre-trained models are located under
+Trained models are under:
+
 `/models/<algorithm>`
 
+
 ###### Video
-Coming so so soon ... 
+Coming way too soon ...
 
 
 
