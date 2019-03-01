@@ -83,24 +83,17 @@ The environment is considered solved, when the average (over 100 episodes) of th
 * Linux or OSX environment
 
 
-##### Train the agent:
-Run `train_ddpg_psne.py` with the following options:
-* a : agents being used (single / multi)
-* e : number of episodes
-* f : folder name for saving models and tensorboard under
-
-
-##### Test the actor
+##### Test the algorithms the actor
 Run `test_ddpg_psne.py` with the following option:
-* p : path of actor network
+* -a : algorithm of choice: ['TD3'|PPO|DDPG|DDPG_PSNE]
 
 
 ###### Pre-trained Models
-The multi-agent environment pre-trained model is located under
-`/models/local_actor.pth`
+The pre-trained models are located under
+`/models/<algorithm>`
 
 ###### Video
-A sample video of the running actor is located in `/assets/Reacher_DDPG_PSNE.mp4`
+Coming so so soon ... 
 
 
 
