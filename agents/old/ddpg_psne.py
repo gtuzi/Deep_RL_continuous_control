@@ -1,3 +1,12 @@
+'''
+/* Copyright (C) 2019 Gerti Tuzi - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the MY license, which unfortunately won't be written
+ * because no one would care to read it, and in the best of scenarios
+ * it will only be used for ego pampering needs.
+ */
+'''
+
 import numpy as np
 import random
 import copy
