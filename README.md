@@ -3,7 +3,7 @@
 [image1]: assets/reachers.gif
 [image2]: assets/crawler.png
 [discounted_state_visitation]: assets/discounted_state_visitation.png
-[Reacher]: https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher 
+[Reacher]: https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#reacher
 [Crawler]: https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md#crawler
 
 [PPO]:   https://arxiv.org/pdf/1707.06347.pdf
@@ -23,8 +23,8 @@
 ### Introduction
 
 For this project, I explore the application of [DDPG], [DDPG] with parameter-space noise variation [PSNE], [TD3], and [PPO].
- 
-These application are applied to [Reacher] and [Crawler] environments. Two versions of [Reacher] are tried: one with a single agent, the other with multiple agents. 
+
+These application are applied to [Reacher] and [Crawler] environments. Two versions of [Reacher] are tried: one with a single agent, the other with multiple agents.
 
 Algorithms such as [A3C] and [D4PG] (based on [DDPG]) take a distributed approach to environments with multiple agents. However, in this work I focus on the combinations of [DDPG] and variations [PSNE], with small adaptations for multi-agent environments.
 
@@ -43,7 +43,7 @@ This is a *multi*-agent (20) where there are several identical agents each with 
 *Note:* The old report includes the single agent experiment as well. They are located onder 'notebooks/old'
 
 ##### Training Traces
-<div style="text-align: center"><img src="assets/Comparative_Results.png" alt="Train Comparisons" width="700" height="450" ></div>
+<div style="text-align: center"><img src="assets/Comparative_Results.png" alt="Train Comparisons" width="500" height="350" ></div>
 
 PPO achieves the highest score on Reacher (approx 75), while the other ones are approx 35 score.
 
@@ -127,13 +127,3 @@ Trained models are under:
 
 ###### Video
 Coming way too soon ...
-
-
-
-
-
-
-
-
-
-
