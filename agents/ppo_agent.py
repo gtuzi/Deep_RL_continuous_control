@@ -219,12 +219,12 @@ class Agent():
                 _done = tau[i].done.astype(np.int)
 
                 # Vtarget = r + y*V(s')
-                _vtarget = r + GAMMA * vp * (1. - _done)
+                _vtarget = r + self.gamma * vp * (1. - _done)
 
                 # Advantage: V_target(s) - V(s) = [r + y*V(s')] - V(s)
                 delta_t = _vtarget - v
-                tau[i].A = delta_t + self.lam*GAMMA*adv_prev # A generalized form
-                tau[i].rFuture = r + GAMMA*rFuture_prev
+                tau[i].A = delta_t + self.lam * self.gamma * adv_prev  # A generalized form
+                tau[i].rFuture = r + self.gamma * rFuture_prev
 
                 adv_prev = tau[i].A
                 rFuture_prev = tau[i].rFuture
@@ -232,7 +232,7 @@ class Agent():
         # Add samples to buffer
         for tau in traces:
             for i in range(len(tau)):
-                self.buffer.add(tau[i], ['s', 'a', 'r', 'sp', 'logp','v','A', 'rFuture', 'done'])
+                self.buffer.add(tau[i], ['s', 'a', 'r', 'sp', 'logp', 'v', 'A', 'rFuture', 'done'])
 
     def _update_LR(self, lr):
         for param_group in self.optimizer.param_groups:
@@ -264,148 +264,4 @@ class Agent():
         for p in parameters:
             pout += np.copy(p.grad.data.cpu().numpy()).reshape(-1).tolist()
         return pout
-
-# class Experience:
-#     def __init__(self, **kwargs):
-#         self._populate_(**kwargs)
-#
-#     def _populate_(self, **kwargs):
-#         # Minimal experience parameters: sarsa and done
-#         assert 's' in kwargs
-#         assert 'a' in kwargs
-#         assert 'r' in kwargs
-#         assert 'sp' in kwargs
-#         assert 'done' in kwargs
-#
-#         for k,v in kwargs.items():
-#             if k == 's':
-#                 self.s = v
-#             elif k == 'a':
-#                 self.a = v
-#             elif k == 'r':
-#                 self.r = v
-#             elif k == 'sp':
-#                 self.sp = v
-#             elif k == 'logp':
-#                 self.logp = v
-#             elif k == 'v':
-#                 self.v = v
-#             elif k == 'A':
-#                 self.A = v
-#             elif k == 'done':
-#                 self.done = v
-#             elif k == 'rFuture':
-#                 self.rFuture = v
-#             elif k == 'entropy':
-#                 self.entropy = v
-
-
-# class TrajectoryBuffer:
-#     """Fixed-size buffer to store experience tuples."""
-#
-#     def __init__(self, action_size, buffer_size, batch_size, seed, **kwargs):
-#         """Initialize a ReplayBuffer object.
-#         Params
-#         ======
-#             buffer_size (int): maximum size of buffer
-#             batch_size (int): size of each training batch
-#         """
-#         self.device = DEVICE if 'device' not in kwargs else kwargs['device']
-#         self.action_size = action_size
-#         self.memory = deque(maxlen=buffer_size)  # internal trajectory (deque)
-#         self.batch_size = batch_size
-#         self.experience = Experience
-#         self.seed = random.seed(seed)
-#
-#     def add(self, experience):
-#         """Add a new experience to trajectory."""
-#         n_agents = experience.s.shape[0]
-#         if n_agents > 1:
-#             state = np.vsplit(experience.s, n_agents)
-#             action = np.vsplit(experience.a, n_agents)
-#             reward = np.vsplit(experience.r, n_agents)
-#             next_state = np.vsplit(experience.sp, n_agents)
-#             log_p = np.vsplit(experience.logp, n_agents)
-#             done = np.vsplit(experience.done, n_agents)
-#             Rfuture = np.vsplit(experience.rFuture, n_agents)
-#             V = np.vsplit(experience.v, n_agents)
-#             A = np.vsplit(experience.A, n_agents)
-#             for i in range(n_agents):
-#                 e = self.experience(s=state[i], a=action[i], r=reward[i],
-#                                     sp=next_state[i], logp=log_p[i], v=V[i],
-#                                     done=done[i], rFuture=Rfuture[i], A=A[i])
-#
-#                 self.memory.append(e)
-#         else:
-#             self.memory.append(experience)
-#
-#     def sample(self):
-#         """Randomly sample_set a batch of experiences from trajectory."""
-#         experiences = random.sample(self.memory, k=self.batch_size)
-#
-#         states = torch.from_numpy(np.vstack([e.s for e in experiences if e is not None])).float().to(
-#             self.device)
-#         actions = torch.from_numpy(np.vstack([e.a for e in experiences if e is not None])).float().to(
-#             self.device)
-#         rewards = torch.from_numpy(np.vstack([e.r for e in experiences if e is not None])).float().to(
-#             self.device)
-#         next_states = torch.from_numpy(np.vstack([e.sp for e in experiences if e is not None])).float().to(
-#             self.device)
-#         logp = torch.from_numpy(np.vstack([e.logp for e in experiences if e is not None])).float().to(
-#             self.device)
-#         v = torch.from_numpy(np.vstack([e.v for e in experiences if e is not None])).float().to(
-#             self.device)
-#         dones = torch.from_numpy(np.vstack([e.done for e in experiences if e is not None]).astype(np.uint8)).float().to(
-#             self.device)
-#         rfuture = torch.from_numpy(np.vstack([e.rFuture for e in experiences if e is not None])).float().to(
-#             self.device)
-#         advantage = torch.from_numpy(np.vstack([e.A for e in experiences if e is not None])).float().to(
-#             self.device)
-#         return (states, actions, rewards, next_states, logp, v, dones, rfuture, advantage)
-#
-#     def __len__(self):
-#         """Return the current size of internal trajectory."""
-#         return len(self.memory)
-#
-#     def clear(self):
-#         self.memory.clear()
-
-
-def hidden_init(layer):
-    fan_in = layer.weight.data.size()[0]
-    lim = 1. / np.sqrt(fan_in)
-    return (-lim, lim)
-
-
-import torch.nn as nn
-from torch.distributions.normal import Normal
-
-class TruncatedNormalSamp():
-    def __init__(self, mu, sig, a, b):
-        self.varsize = mu.size()
-        self.mu = mu.view(-1)
-        self.sig = sig.view(-1)
-        self.sample_set = torch.zeros(self.mu.size())
-        self.sample_set_log_prob = torch.zeros(self.mu.size())
-        self.a = a
-        self.b = b
-
-    def sample(self):
-        self._sample()
-        return self.sample_set.view(self.varsize)
-
-
-    def _sample(self):
-        dist = Normal(self.mu, self.sig)
-        _idx_resamp = torch.ones(self.mu.size()).byte() # Keep track of what needs to be resampled
-        i = 0
-        while torch.sum(_idx_resamp) > 0:
-            _idx_keep = torch.zeros(self.mu.size()).byte() # Mark what needs to be kept in this sample
-            _samp = dist.sample()
-            _idx_keep[_idx_resamp] |= (_samp[_idx_resamp] >= self.a) & (_samp[_idx_resamp] <= self.b)
-            _idx_resamp &= (_samp < self.a) | (_samp > self.b)
-            self.sample_set[_idx_keep] = _samp[_idx_keep]
-            i += 1
-            # if i % 100 == 0:
-            #     print('Resample attempt: {}'.format(i))
 
