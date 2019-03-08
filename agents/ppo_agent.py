@@ -9,13 +9,13 @@
 
 import numpy as np
 import random
-from collections import deque
 from tensorboardX import SummaryWriter
 import torch
 import torch.optim as optim
 from agents.topologies.actor import FCGaussianActorValue
 from agents.utils.schedule import LinearSchedule
 from agents.utils.buffers import ReplayBuffer
+import torch.nn as nn
 
 BATCH_SIZE = 4096  # minibatch size
 GAMMA = 0.99  # discount factor
