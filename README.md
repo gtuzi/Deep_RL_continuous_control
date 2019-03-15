@@ -26,7 +26,7 @@ For this project, I explore the application of [DDPG], [DDPG] with parameter-spa
 
 These application are applied to [Reacher] and [Crawler] environments. Two versions of [Reacher] are tried: one with a single agent, the other with multiple agents.
 
-Algorithms such as [A3C] and [D4PG] (based on [DDPG]) take a distributed approach to environments with multiple agents. However, in this work I focus on the combinations of [DDPG] and variations [PSNE], with small adaptations for multi-agent environments.
+Algorithms such as [A3C] and [D4PG] (based on [DDPG]) take a distributed approach to environments with multiple agents. However, in this work I focus on [PPO], [TD3], [DDPG], and [DDPG] with parameter space noise [PSNE], with small adaptations for multi-agent environments.
 
 
 ### Environment Description
