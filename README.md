@@ -115,7 +115,7 @@ Located in `agents/topologies/actor.py`
 
 
 ##### Test the algorithms the actor
-Run `test_ddpg_psne.py` with the following option:
+To test the agents on the reacher run: `reacher_test_agent.py` with the following option:
 * -a : algorithm of choice: `TD3|PPO|DDPG|DDPG_PSNE`
 
 
@@ -124,6 +124,3 @@ Trained models are under:
 
 `/models/<algorithm>`
 
-
-###### Video
-Coming way too soon ...
