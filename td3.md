@@ -23,14 +23,15 @@ But this is still biased because the networks sample the same replay buffer and 
 Moreover, for some states, this dependence will exacerbate, i.e. : `Q1(s, π2(s)) >= Q2(s, π2(s))`, when we think that `Q2(s, π2(s))` suffers from overestimation.
 To address this problem, we propose to simply upper-bound the less biased value estimate `Q2` by the biased estimate `Q1`.  This results in taking the minimum between the two estimates, to give the target update of our Clipped Double Q-learning algorithm.
 
-<div style="text-align: center"><img src="assets/double_clipped_q.png" alt="Clipped Double Q-learning" width="300" height="50" ></div>
+<div style="text-align: center"><img src="assets/double_clipped_q.png" alt="Clipped Double Q-learning" width="350" height="60" ></div>
 
 
 #### Error Accumulation
 Due to the temporal difference update, where an estimate of the value function is built from an estimate of a subsequent state, *there is a build up of error*.
 These estimation errors can accumulate, resulting in large overestimation bias, which in turn lead to suboptimal policy updates.
 
-<div style="text-align: center"><img src="assets/overestimation.png" alt="Function Overestimation" width="300" height="80" ></div>
+<div style="text-align: center"><img src="assets/overestimation.png" alt="Function Overestimation" width="400" height="150
+" ></div>
 
 This means that the Bellman equation is never satisfied, and ultimately, the value function that is learned includes this error.
 
@@ -41,7 +42,7 @@ Target networks achieve stability in deep RL.  Since deep function approximators
 Without a fixed target, each update leaves some residual error which will begin to accumulate (see above).
 When paired with a policy maximizing over the value estimate, it can result in wildly divergent values.
 
-<div style="text-align: center"><img src="assets/policy_variance.png" alt="Policy Variance" width="400" height="250" ></div>
+<div style="text-align: center"><img src="assets/policy_variance.png" alt="Policy Variance" width="500" height="300" ></div>
 
 *The following is my interpretation of the graph, as I think the authors could have done a better job in their explanation*
 
