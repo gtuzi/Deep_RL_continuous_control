@@ -47,11 +47,6 @@ This is a *multi*-agent (20) where there are several identical agents each with 
 
 PPO achieves the highest score on Reacher (approx 75), while the other ones are approx 35 score.
 
-
-#### [Crawler]
-The multi-agent (13) [Crawler] enviroment is used here.
-
-
 ### Scoring
 The tasks in this project are episodic, that is, the agent/s run for a finite number of steps on the environment.
 - After each episode, add up the rewards that each agent received (without discounting) to get a score for each agent.  This yields *N* (potentially different) scores.
@@ -61,12 +56,11 @@ The tasks in this project are episodic, that is, the agent/s run for a finite nu
 ## Poicy gradient continuous control algorithms implemented
 
 ### Deep Deterministic Policy Gradients [DDPG]
-[DDPG], [DDPG] + [PSNE] are implemented. The explanation for these algorithms is found
-[here](ddpg.md)
+[DDPG], [DDPG] + [PSNE] are implemented. The readme is [here](ddpg.md)
 
 
 ### Twin Delayed Deep Deterministic Policy Gradient [TD3]
-[TD3] is implemented. Explanation is [here](td3.md)
+Readme located [here](td3.md)
 
 
 ### Proximal Policy Optimization [PPO]
@@ -111,7 +105,7 @@ Located in `agents/topologies/actor.py`
 * tensorboard: 1.7.0
 * pytorch: 0.4.1
 * numpy: 1.15.2
-* Linux or OSX environment
+* Linux / OSX
 
 
 ##### Test the algorithms the actor
