@@ -1,12 +1,10 @@
 import os
 import torch
 import numpy as np
-import pickle
 from agents.ppo_agent import Agent as ppo_agent
 from agents.td3_agent import Agent as td3_agent
 from agents.ddpg_agent import Agent as ddpg_agent
 from agents.utils.RunConfig import RunConfig
-import seaborn as sns
 from unityagents import UnityEnvironment
 
 cwd = os.getcwd()
@@ -183,6 +181,52 @@ def run_ddpg(env):
 
 
 
+# --------- DDPG_PSNE ------------- #
+ddpg_psne_config = RunConfig()
+ddpg_psne_config.rollout = rollout
+ddpg_psne_config.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+
+def load_ddpg_psne_model(agent, dir, prefix=''):
+    if not os.path.exists(dir + prefix):
+        raise Exception('{} : does not exist'.format(dir + prefix))
+    agent.actor_local.load_state_dict(torch.load(dir + prefix + 'actor.pth', map_location=ddpg_psne_config.device))
+    agent.critic_local.load_state_dict(torch.load(dir + prefix + 'critic.pth', map_location=ddpg_psne_config.device))
+
+
+def run_ddpg_psne(env):
+    log_dir = cwd + '/models/{}/'.format(algo) + 'reacher/'
+    agent = ddpg_agent(state_size=state_size,
+                       action_size=action_size,
+                       random_seed=seed,
+                       n_agents=n_agents,
+                       writer=None,
+                       config=ddpg_psne_config)
+
+    load_ddpg_psne_model(agent, log_dir)
+    brain_name = env.brain_names[0]
+    env_info = env.reset(train_mode=False)[brain_name]  # reset the environment
+    s = env_info.vector_observations  # get the current state (for each train_agent)
+    num_agents = len(env_info.agents)
+    G = np.zeros(num_agents)  # undiscounted return for each train_agent
+
+    t = 0
+    while True:
+        a = agent.act(s, add_noise=False)  # select an action from train_agent
+        env_info = env.step(a)[brain_name]  # send all actions to tne environment
+        sp = env_info.vector_observations  # get next state (for each train_agent)
+        rewards = np.array(env_info.rewards)  # get reward (for each train_agent)
+        dones = np.array(env_info.local_done)  # see if episode finished
+        G += rewards  # update the score (for each train_agent)
+        if np.any(dones):  # exit loop if episode finished
+            break
+        else:
+            s = sp  # roll over states to next time step
+            t += 1
+    return G
+
+
+
 # --------- Main ------------ #
 import sys, getopt
 
@@ -207,6 +251,6 @@ if __name__== "__main__":
     elif algo == 'ddpg':
         run_ddpg(env)
     elif algo == 'ddpg_psne':
-        pass
+        run_ddpg_psne(env)
     elif algo == 'td3':
         run_td3(env)
